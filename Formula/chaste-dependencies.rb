@@ -19,12 +19,13 @@ class ChasteDependencies < Formula
   depends_on "xsd"
 
   def install
-    File.open("chaste-dependencies", "w") |file|
+    File.open("chaste-dependencies", "w") do |file|
       file.write "#!/bin/sh"+"\n"
       deps.each do |dep|
         f = dep.to_formula
         file.write "echo "+[f.full_name, f.version, f.prefix].join("\t")+"\n"
       end
+    end
     bin.install "chaste-dependencies"
   end
 end
