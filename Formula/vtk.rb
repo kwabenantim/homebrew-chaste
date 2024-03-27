@@ -107,9 +107,9 @@ class Vtk < Formula
       -DPython3_EXECUTABLE:FILEPATH=#{which(python)}
       -DVTK_GROUP_ENABLE_Qt:STRING=YES
       -DVTK_QT_VERSION:STRING=6
-      -DVTK_Group_MPI:BOOL=ON
+      -DVTK_USE_MPI:BOOL=ON
     ]
-    # Chaste -DVTK_Group_MPI:BOOL=ON
+    # Chaste -DVTK_USE_MPI:BOOL=ON
 
     # https://github.com/Homebrew/linuxbrew-core/pull/21654#issuecomment-738549701
     args << "-DOpenGL_GL_PREFERENCE=LEGACY"
