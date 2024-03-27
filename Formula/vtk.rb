@@ -23,14 +23,15 @@ class Vtk < Formula
   depends_on "fontconfig"
   depends_on "gl2ps"
   depends_on "glew"
-  depends_on "hdf5-mpi" #chaste
+  depends_on "hdf5-mpi" # Chaste
   depends_on "jpeg-turbo"
   depends_on "jsoncpp"
+  depends_on "kwabenantim/chaste/netcdf" # Chaste
   depends_on "libogg"
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "lz4"
-  depends_on "kwabenantim/chaste/netcdf"
+  depends_on "open-mpi" # Chaste
   depends_on "pugixml"
   depends_on "pyqt"
   depends_on "python@3.12"
@@ -39,7 +40,6 @@ class Vtk < Formula
   depends_on "theora"
   depends_on "utf8cpp"
   depends_on "xz"
-  depends_on "open-mpi" #chaste
 
   uses_from_macos "expat"
   uses_from_macos "libxml2"
@@ -107,8 +107,9 @@ class Vtk < Formula
       -DPython3_EXECUTABLE:FILEPATH=#{which(python)}
       -DVTK_GROUP_ENABLE_Qt:STRING=YES
       -DVTK_QT_VERSION:STRING=6
-      -DVTK_Group_MPI:BOOL=ON #chaste
+      -DVTK_Group_MPI:BOOL=ON
     ]
+    # Chaste -DVTK_Group_MPI:BOOL=ON
 
     # https://github.com/Homebrew/linuxbrew-core/pull/21654#issuecomment-738549701
     args << "-DOpenGL_GL_PREFERENCE=LEGACY"

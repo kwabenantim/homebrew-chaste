@@ -25,7 +25,7 @@ class Netcdf < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "hdf5-mpi" #chaste
+  depends_on "hdf5-mpi" # Chaste
 
   uses_from_macos "m4" => :build
   uses_from_macos "bzip2"
