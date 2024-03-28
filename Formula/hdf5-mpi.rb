@@ -1,23 +1,13 @@
 class Hdf5Mpi < Formula
   desc "File format designed to store large amounts of data"
   homepage "https://www.hdfgroup.org/HDF5"
-  url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.3/src/hdf5-1.14.3.tar.bz2"
+  url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.3/src/hdf5-1.12.3.tar.bz2"
   sha256 "9425f224ed75d1280bb46d6f26923dd938f9040e7eaebf57e66ec7357c08f917"
   license "BSD-3-Clause"
   version_scheme 1
 
   livecheck do
     formula "hdf5"
-  end
-
-  bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "e9691a00ac8e505fbfe276547fac8f40c926659b7ae756a04ecfc0cd86d06ea2"
-    sha256 cellar: :any,                 arm64_ventura:  "2c045a01641c589a3f73e7e5b49f90bedb3b4d362818a97016403536d966bd61"
-    sha256 cellar: :any,                 arm64_monterey: "edaecb37c499f575aaec2a724faf835dd6ee04299d4f54e735c2c3a528d6e898"
-    sha256 cellar: :any,                 sonoma:         "592edf06d0dd539e324787d4b658361e9e73554faea1100a16c595194774748a"
-    sha256 cellar: :any,                 ventura:        "dbea915eb8b1494edcca4f0df5bfdcb83d8467c86fb4de555da1779f28e8089a"
-    sha256 cellar: :any,                 monterey:       "ae5544130fdd0843e7b281d97a538aa307823f5dee429e681412e35d93ba5cd0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "2d3d1ccbf33cbbe10e13a6969d682217e650eefbaecc0f4a2e62c79394ce06a7"
   end
 
   depends_on "autoconf" => :build
