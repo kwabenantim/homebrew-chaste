@@ -5,7 +5,6 @@ class Parmetis < Formula
   sha256 "f2d9a231b7cf97f1fee6e8c9663113ebf6c240d407d3c118c55b3633d6be6e5f"
   license :cannot_represent
   revision 1
-  head "https://github.com/KarypisLab/ParMETIS", branch: "main"
 
   depends_on "cmake" => :build
   depends_on "metis"
