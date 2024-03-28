@@ -11,13 +11,10 @@ class Petsc < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:   "0b7a3567bc4354325e46493bfdd0ef72459d80ebdc564d02b39a24862db1eb0e"
-    sha256 arm64_ventura:  "cf1807b7fe6cf822bcef5c27f37cfbcfdaf9a69b661f4a85148e215fc9f77284"
-    sha256 arm64_monterey: "26414dab362946e7659549fb33673bfd7775047b05e46befa0c6ec02d211542f"
-    sha256 sonoma:         "42ed10d08b07c4b5e2efac30fe8b0b865e426f8fa9ba5fe374a2109870a6cb56"
-    sha256 ventura:        "0bf76905ca9e9d0103edd11b7db578e4eae83e1a579b8ed509c74c69c9a1bbd0"
-    sha256 monterey:       "c6f13bdb33ca84a5e8f3098f062cf07e9118e3bf55db72e3ccdae412cc018fb4"
-    sha256 x86_64_linux:   "ee8ff9905d77adbedc5c0550b9488b013858d1b919726130046d4676a8106db4"
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/petsc-3.20.5"
+    rebuild 1
+    sha256 ventura:      "03d522d9bedc2949982222efb6350c4ea5927c8bed4bc27c43387401393b5f11"
+    sha256 x86_64_linux: "bb2e9d5ff7fe716535019d91130b50cd12b36a83cd9a1a5bd64a1fec45666f96"
   end
 
   depends_on "hdf5-mpi" # Chaste

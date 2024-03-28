@@ -7,13 +7,10 @@ class Vtk < Formula
   head "https://gitlab.kitware.com/vtk/vtk.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:   "57dd84ad334b5f14597f2f13ffc029a47170a26683ff41c8c74e5c17aa058bbe"
-    sha256 cellar: :any,                 arm64_ventura:  "a1832130e10e675dd57674beb822437fa1d999ff617f4af671f550a377b0827b"
-    sha256 cellar: :any,                 arm64_monterey: "d8a2aa630b9ca7e0dcc620b9838387c7a8648e0d001b5b1be0fb2c85754db847"
-    sha256 cellar: :any,                 sonoma:         "2a337b8498153d3ec70bef5dab1f42bf0966de248feaacb2e2cbee93f6554ea5"
-    sha256 cellar: :any,                 ventura:        "d174163d7c6a6eb4187d93d01bf9953d0f5ba7ab3ae594951411fbe46284ef08"
-    sha256 cellar: :any,                 monterey:       "5700425cc384b511a36aa68ad4a55094a60fdc9277b7520362d3d6e029aaae3c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "72cfac817837822c9946e00bf5d3d91ef2e1061409d7c402cda2ad532412a732"
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/vtk-9.3.0"
+    rebuild 1
+    sha256 cellar: :any,                 ventura:      "4e1eff39eb90558bc5e6ead0d33a01a55099b7bc8b7b060ffba060f3a141a6e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "fb01db122e0f9211d7ef76b63b443a6c97b6148f97acb389715915d2d984f0e3"
   end
 
   depends_on "cmake" => [:build, :test]
