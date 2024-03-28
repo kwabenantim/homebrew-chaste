@@ -12,6 +12,9 @@ class Netcdf < Formula
     regex(/^(?:netcdf[._-])?v?(\d+(?:\.\d+)+)$/i)
   end
 
+  bottle do
+  end
+
   depends_on "cmake" => :build
   depends_on "hdf5-mpi" # Chaste
   depends_on "open-mpi" # Chaste
