@@ -6,7 +6,8 @@ class Hdf5MpiAT110 < Formula
   license "BSD-3-Clause"
 
   livecheck do
-    formula "hdf5"
+    url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/"
+    regex(%r{href=["']?hdf5[._-]v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   keg_only :versioned_formula
@@ -44,7 +45,6 @@ class Hdf5MpiAT110 < Formula
       --disable-silent-rules
       --enable-build-mode=production
       --enable-fortran
-      --enable-cxx
       --enable-parallel
       --prefix=#{prefix}
       --with-szlib=#{Formula["libaec"].opt_prefix}
@@ -57,11 +57,6 @@ class Hdf5MpiAT110 < Formula
     args << "--with-zlib=#{Formula["zlib"].opt_prefix}" if OS.linux?
 
     system "./configure", *args
-
-    # Avoid shims in settings file
-    inreplace "src/libhdf5.settings", which("mpic++").to_s, "mpic++" # Chaste
-    inreplace "src/libhdf5.settings", which("mpicc").to_s, "mpicc" # Chaste
-
     system "make", "install"
   end
 
