@@ -51,7 +51,7 @@ class Netcdf < Formula
 
     # Remove shim paths
     inreplace [bin/"nc-config", lib/"pkgconfig/netcdf.pc", lib/"cmake/netCDF/netCDFConfig.cmake",
-               lib/"libnetcdf.settings"], "#{which(ENV.cc)}", ENV.cc
+               lib/"libnetcdf.settings"], which(ENV.cc).to_s, ENV.cc
     # Chaste: which(ENV.cc)
   end
 
