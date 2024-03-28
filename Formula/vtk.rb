@@ -109,7 +109,7 @@ class Vtk < Formula
       -DVTK_QT_VERSION:STRING=6
       -DVTK_USE_MPI:BOOL=ON
     ]
-    # Chaste -DVTK_USE_MPI:BOOL=ON
+    # Chaste: -DVTK_USE_MPI:BOOL=ON
 
     # https://github.com/Homebrew/linuxbrew-core/pull/21654#issuecomment-738549701
     args << "-DOpenGL_GL_PREFERENCE=LEGACY"

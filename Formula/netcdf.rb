@@ -26,6 +26,7 @@ class Netcdf < Formula
 
   depends_on "cmake" => :build
   depends_on "hdf5-mpi" # Chaste
+  depends_on "open-mpi" # Chaste
 
   uses_from_macos "m4" => :build
   uses_from_macos "bzip2"
@@ -38,6 +39,9 @@ class Netcdf < Formula
     # Fixes "relocation R_X86_64_PC32 against symbol `stderr@@GLIBC_2.2.5' can not be used" on Linux
     args << "-DCMAKE_POSITION_INDEPENDENT_CODE=ON" if OS.linux?
 
+    ENV["CC"] = "mpicc" # Chaste
+    ENV["CXX"] = "mpicxx" # Chaste
+
     system "cmake", "-S", ".", "-B", "build_shared", *args, "-DBUILD_SHARED_LIBS=ON", *std_cmake_args
     system "cmake", "--build", "build_shared"
     system "cmake", "--install", "build_shared"
@@ -47,7 +51,8 @@ class Netcdf < Formula
 
     # Remove shim paths
     inreplace [bin/"nc-config", lib/"pkgconfig/netcdf.pc", lib/"cmake/netCDF/netCDFConfig.cmake",
-               lib/"libnetcdf.settings"], Superenv.shims_path/ENV.cc, ENV.cc
+               lib/"libnetcdf.settings"], "#{which(ENV.cc)}", ENV.cc
+    # Chaste: which(ENV.cc)
   end
 
   test do
