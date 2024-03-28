@@ -6,6 +6,13 @@ class Vtk < Formula
   license "BSD-3-Clause"
   head "https://gitlab.kitware.com/vtk/vtk.git", branch: "master"
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/vtk-9.3.0"
+    rebuild 1
+    sha256 cellar: :any,                 ventura:      "4e1eff39eb90558bc5e6ead0d33a01a55099b7bc8b7b060ffba060f3a141a6e8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "fb01db122e0f9211d7ef76b63b443a6c97b6148f97acb389715915d2d984f0e3"
+  end
+
   depends_on "cmake" => [:build, :test]
   depends_on "boost"
   depends_on "double-conversion"
