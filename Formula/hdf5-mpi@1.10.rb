@@ -21,12 +21,17 @@ class Hdf5MpiAT110 < Formula
   uses_from_macos "zlib"
 
   def install
+    # Work around incompatibility with new linker (FB13194355)
+    # https://github.com/HDFGroup/hdf5/issues/3571
+    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
+
+    ENV["libaec_DIR"] = Formula["libaec"].opt_prefix.to_s
+
     ENV["CC"] = "mpicc"
     ENV["CXX"] = "mpic++"
     ENV["FC"] = "mpifort"
     ENV["F77"] = "mpif77"
     ENV["F90"] = "mpif90"
-    ENV["libaec_DIR"] = Formula["libaec"].opt_prefix.to_s
 
     args = %w[
       -DHDF5_USE_GNU_DIRS:BOOL=ON
