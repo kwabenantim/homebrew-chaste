@@ -10,6 +10,13 @@ class Petsc < Formula
     regex(/href=.*?petsc-lite[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/petsc-3.20.5"
+    rebuild 1
+    sha256 ventura:      "03d522d9bedc2949982222efb6350c4ea5927c8bed4bc27c43387401393b5f11"
+    sha256 x86_64_linux: "bb2e9d5ff7fe716535019d91130b50cd12b36a83cd9a1a5bd64a1fec45666f96"
+  end
+
   depends_on "hdf5-mpi" # Chaste
   depends_on "hwloc"
   depends_on "kwabenantim/chaste/netcdf" # Chaste
