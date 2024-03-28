@@ -6,6 +6,13 @@ class Parmetis < Formula
   license :cannot_represent
   revision 1
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/parmetis-4.0.3_1"
+    rebuild 1
+    sha256 cellar: :any,                 ventura:      "32017f9d0122173052fd0b271fa27ae9e74c1f2dade91b22cc100f94a82b40f8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "1938a5289907bfaef623d1ab05d78f038564da87793b75a5acf6ad317e9dcebd"
+  end
+
   depends_on "cmake" => :build
   depends_on "metis"
   depends_on "open-mpi"
