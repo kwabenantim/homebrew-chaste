@@ -12,52 +12,34 @@ class Hdf5MpiAT110 < Formula
 
   keg_only :versioned_formula
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  depends_on "cmake" => :build
   depends_on "gcc" # for gfortran
   depends_on "libaec"
+  depends_on "pkg-config"
   depends_on "open-mpi"
 
   uses_from_macos "zlib"
 
   def install
-    # Work around incompatibility with new linker (FB13194355)
-    # https://github.com/HDFGroup/hdf5/issues/3571
-    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
+    ENV["CC"] = "mpicc"
+    ENV["CXX"] = "mpic++"
+    ENV["FC"] = "mpifort"
+    ENV["F77"] = "mpif77"
+    ENV["F90"] = "mpif90"
+    ENV["libaec_DIR"] = Formula["libaec"].opt_prefix.to_s
 
-    inreplace %w[c++/src/h5c++.in fortran/src/h5fc.in bin/h5cc.in],
-              "${libdir}/libhdf5.settings",
-              "#{pkgshare}/libhdf5.settings"
-
-    inreplace "src/Makefile.am",
-              "settingsdir=$(libdir)",
-              "settingsdir=#{pkgshare}"
-
-    if OS.mac?
-      system "autoreconf", "--force", "--install", "--verbose"
-    else
-      system "./autogen.sh"
-    end
-
-    args = %W[
-      --disable-dependency-tracking
-      --disable-silent-rules
-      --enable-build-mode=production
-      --enable-fortran
-      --enable-parallel
-      --prefix=#{prefix}
-      --with-szlib=#{Formula["libaec"].opt_prefix}
-      CC=mpicc
-      CXX=mpic++
-      FC=mpifort
-      F77=mpif77
-      F90=mpif90
+    args = %w[
+      -DHDF5_USE_GNU_DIRS:BOOL=ON
+      -DHDF5_INSTALL_CMAKE_DIR=lib/cmake/hdf5
+      -DHDF5_BUILD_FORTRAN:BOOL=ON
+      -DHDF5_BUILD_CPP_LIB:BOOL=OFF
+      -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON
+      -DHDF5_BUILD_FORTRAN:BOOL=ON
+      -DHDF5_ENABLE_PARALLEL:BOOL=ON
     ]
-    args << "--with-zlib=#{Formula["zlib"].opt_prefix}" if OS.linux?
-
-    system "./configure", *args
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
@@ -102,5 +84,9 @@ class Hdf5MpiAT110 < Formula
     EOS
     system "#{bin}/h5fc", "test.f90"
     assert_equal version.to_s, shell_output("./a.out").chomp
+
+    # Make sure that it was built with SZIP/libaec
+    config = shell_output("#{bin}/h5cc -showconfig")
+    assert_match %r{I/O filters.*DECODE}, config
   end
 end
