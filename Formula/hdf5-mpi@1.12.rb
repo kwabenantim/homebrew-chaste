@@ -1,12 +1,12 @@
-class Hdf5MpiAT110 < Formula
+class Hdf5MpiAT112 < Formula
   desc "File format designed to store large amounts of data"
   homepage "https://www.hdfgroup.org/HDF5"
-  url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.11/src/hdf5-1.10.11.tar.bz2"
-  sha256 "0afc77da5c46217709475bbefbca91c0cb6f1ea628ccd8c36196cf6c5a4de304"
+  url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/hdf5-1.12.3/src/hdf5-1.12.3.tar.bz2"
+  sha256 "31cdc13b1097b34f8d5bee67a8ea2ab082b7c128d817e69e04d8f59ae8aea295"
   license "BSD-3-Clause"
 
   livecheck do
-    url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/"
+    url "https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.12/"
     regex(%r{href=["']?hdf5[._-]v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
