@@ -56,7 +56,7 @@ class Hdf5Mpi < Formula
       F90=mpif90
     ]
     # Chaste: --enable-cxx
-    
+
     args << "--with-zlib=#{Formula["zlib"].opt_prefix}" if OS.linux?
 
     system "./configure", *args

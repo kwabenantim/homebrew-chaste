@@ -20,8 +20,6 @@ class Hdf5MpiAT110 < Formula
 
   uses_from_macos "zlib"
 
-  conflicts_with "hdf5", because: "hdf5-mpi is a variant of hdf5, one can only use one or the other"
-
   def install
     # Work around incompatibility with new linker (FB13194355)
     # https://github.com/HDFGroup/hdf5/issues/3571
