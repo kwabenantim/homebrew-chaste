@@ -10,6 +10,13 @@ class Sundials < Formula
     regex(/href=.*?sundials[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/sundials-5.8.0"
+    sha256 cellar: :any,                 arm64_sonoma: "f5c94f7a81b2b5aecd1577d5a156d9a01dde83701e4575b66a3a6b4f69c2e5aa"
+    sha256 cellar: :any,                 ventura:      "fb304674957c291f3e2ac1d2d51da1a150f5328f662888bff4f97859b167fc44"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "bc02ade8cf77396fa5a261edf73fcfed013324c38709a901fe5a00c65bcf2d72"
+  end
+
   depends_on "cmake" => :build
   depends_on "gcc" # for gfortran
   depends_on "open-mpi"
