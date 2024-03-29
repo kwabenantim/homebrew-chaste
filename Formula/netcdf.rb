@@ -12,6 +12,14 @@ class Netcdf < Formula
     regex(/^(?:netcdf[._-])?v?(\d+(?:\.\d+)+)$/i)
   end
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/netcdf-4.9.2_1"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_sonoma: "28fdd81b1a59a4a5666fca283838a74f668d1973e47899c04273e03a2e57fdc0"
+    sha256 cellar: :any,                 ventura:      "da738072d8091468cb684b6afc5a7012b4121407548227ba57fe840a7b56b7c5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "342452a0099f8fc40235580ac6fb7a5a95e49b5f224773bc16b4fe45fc603a36"
+  end
+
   depends_on "cmake" => :build
   depends_on "hdf5-mpi" # Chaste
   depends_on "open-mpi" # Chaste
