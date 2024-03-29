@@ -10,7 +10,7 @@ class Petsc < Formula
     regex(/href=.*?petsc-lite[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  depends_on "hdf5-mpi" # Chaste: hdf5-mpi
+  depends_on "hdf5-mpi" # Chaste
   depends_on "hwloc"
   depends_on "kwabenantim/chaste/netcdf" # Chaste
   depends_on "metis"
