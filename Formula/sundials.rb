@@ -17,44 +17,37 @@ class Sundials < Formula
   depends_on "suite-sparse"
 
   uses_from_macos "libpcap"
+  uses_from_macos "m4"
 
   def install
     blas = "-L#{Formula["openblas"].opt_lib} -lopenblas"
-    args = %W[
+    args = std_cmake_args + %W[
       -DBUILD_SHARED_LIBS=ON
       -DKLU_ENABLE=ON
       -DKLU_LIBRARY_DIR=#{Formula["suite-sparse"].opt_lib}
-      -DKLU_INCLUDE_DIR=#{Formula["suite-sparse"].opt_include}/suitesparse
+      -DKLU_INCLUDE_DIR=#{Formula["suite-sparse"].opt_include}
       -DLAPACK_ENABLE=ON
+      -DBLA_VENDOR=OpenBLAS
       -DLAPACK_LIBRARIES=#{blas};#{blas}
       -DMPI_ENABLE=ON
     ]
 
-    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
-    system "cmake", "--build", "build"
-    system "cmake", "--install", "build"
+    mkdir "build" do
+      system "cmake", "..", *args
+      system "make", "install"
+    end
 
     # Only keep one example for testing purposes
     (pkgshare/"examples").install Dir[prefix/"examples/nvector/serial/*"] \
                                   - Dir[prefix/"examples/nvector/serial/{CMake*,Makefile}"]
-    (prefix/"examples").rmtree
+    rm_rf prefix/"examples"
   end
 
   test do
     cp Dir[pkgshare/"examples/*"], testpath
-    args = %W[
-      -I#{include}
-      -L#{lib}
-      -lsundials_core
-      -lsundials_nvecserial
-      -lmpi
-      -lm
-    ]
-
-    args += ["-I#{Formula["open-mpi"].opt_include}", "-L#{Formula["open-mpi"].opt_lib}"] if OS.mac?
-
-    system ENV.cc, "test_nvector.c", "test_nvector_serial.c", "-o", "test", *args
-
-    assert_match "SUCCESS: NVector module passed all tests", shell_output("./test 42 0")
+    system ENV.cc, "-I#{include}", "test_nvector.c", "sundials_nvector.c",
+                   "test_nvector_serial.c", "-L#{lib}", "-lsundials_nvecserial", "-lm"
+    assert_match "SUCCESS: NVector module passed all tests",
+                 shell_output("./a.out 42 0")
   end
 end
