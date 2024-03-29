@@ -37,11 +37,7 @@ class Petsc < Formula
     # Avoid references to Homebrew shims
     rm_f lib/"petsc/conf/configure-hash"
 
-    if OS.mac?
-      inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
-    elsif File.readlines("#{lib}/petsc/conf/petscvariables").grep(Superenv.shims_path.to_s).any?
-      inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
-    end
+    inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
   end
 
   test do
