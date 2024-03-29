@@ -25,7 +25,7 @@ class Sundials < Formula
       -DBUILD_SHARED_LIBS=ON
       -DKLU_ENABLE=ON
       -DKLU_LIBRARY_DIR=#{Formula["suite-sparse"].opt_lib}
-      -DKLU_INCLUDE_DIR=#{Formula["suite-sparse"].opt_include}
+      -DKLU_INCLUDE_DIR=#{Formula["suite-sparse"].opt_include}/suitesparse
       -DLAPACK_ENABLE=ON
       -DBLA_VENDOR=OpenBLAS
       -DLAPACK_LIBRARIES=#{blas};#{blas}
