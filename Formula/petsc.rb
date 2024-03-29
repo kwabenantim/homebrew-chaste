@@ -12,7 +12,6 @@ class Petsc < Formula
 
   depends_on "hdf5-mpi" # Chaste
   depends_on "hwloc"
-  depends_on "hwloc"
   depends_on "kwabenantim/chaste/netcdf" # Chaste
   depends_on "metis"
   depends_on "open-mpi"
