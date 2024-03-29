@@ -38,8 +38,11 @@ class Netcdf < Formula
     lib.install "build_static/liblib/libnetcdf.a"
 
     # Remove shim paths
-    inreplace [bin/"nc-config", lib/"pkgconfig/netcdf.pc", lib/"cmake/netCDF/netCDFConfig.cmake",
-               lib/"libnetcdf.settings"], which(ENV.cc).to_s, ENV.cc
+    inreplace [bin/"nc-config",
+               lib/"pkgconfig/netcdf.pc",
+               lib/"cmake/netCDF/netCDFConfig.cmake",
+               lib/"libnetcdf.settings"],
+               which(ENV.cc).to_s, ENV.cc
     # Chaste: which(ENV.cc)
   end
 
