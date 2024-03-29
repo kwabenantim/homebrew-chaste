@@ -29,7 +29,6 @@ class Petsc < Formula
                           "--CC=mpicc",
                           "--CXX=mpicxx",
                           "--with-fc=0",
-                          "--with-shared-libraries",
                           "MAKEFLAGS=$MAKEFLAGS"
     system "make", "all"
     system "make", "install"
