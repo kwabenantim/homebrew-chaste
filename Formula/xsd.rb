@@ -6,6 +6,13 @@ class Xsd < Formula
   sha256 "eca52a9c8f52cdbe2ae4e364e4a909503493a0d51ea388fc6c9734565a859817"
   license "GPL-2.0-only" => { with: "Classpath-exception-2.0" }
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/xsd-4.0.0"
+    sha256 cellar: :any,                 arm64_sonoma: "52ab544a77b11cd188df839963e1b298485fdf1522fe0f39d31e11192e15c923"
+    sha256 cellar: :any,                 ventura:      "6ac1946b2990a3ef3c8259abc8294bdfa2c51e966ae9a635b51dcfb64216eafe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "38d47fd39434bd1f7666c5139a29074ba9b774b102951d0e3983b753dbfdb417"
+  end
+
   depends_on "pkg-config" => :build
   depends_on "kwabenantim/chaste/xerces-c"
 
