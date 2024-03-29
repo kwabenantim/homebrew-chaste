@@ -7,10 +7,10 @@ class Parmetis < Formula
   revision 2
 
   bottle do
-    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/parmetis-4.0.3_1"
-    rebuild 1
-    sha256 cellar: :any,                 ventura:      "32017f9d0122173052fd0b271fa27ae9e74c1f2dade91b22cc100f94a82b40f8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "1938a5289907bfaef623d1ab05d78f038564da87793b75a5acf6ad317e9dcebd"
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/parmetis-4.0.3_2"
+    sha256 cellar: :any,                 arm64_sonoma: "3741dce7de5ecc1e553839512d15154f387767a628493132a62a62845cc5ee34"
+    sha256 cellar: :any,                 ventura:      "ecee87626a55c1543bd5283a7767ac6c5aaecca3af73404fcde2f1839fc5a0cf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "51f2d2cb5250d677157b074ee673372c16cf74ec1db8c961c07114c58de6ddcc"
   end
 
   depends_on "cmake" => :build
