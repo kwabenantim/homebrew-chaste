@@ -1,23 +1,17 @@
 class Petsc < Formula
   desc "Portable, Extensible Toolkit for Scientific Computation (real)"
-  homepage "https://petsc.org/"
-  url "https://web.cels.anl.gov/projects/petsc/download/release-snapshots/petsc-3.20.5.tar.gz"
-  sha256 "fb4e637758737af910b05f30a785245633916cd0a929b7b6447ad1028da4ea5a"
+  homepage "https://www.mcs.anl.gov/petsc/"
+  url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.15.5.tar.gz"
+  sha256 "67dc31f1c1c941a0e45301ed4042628586e92e8c4e9b119695717ae782ef23a3"
   license "BSD-2-Clause"
 
   livecheck do
-    url "https://web.cels.anl.gov/projects/petsc/download/release-snapshots/"
+    url "https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/"
     regex(/href=.*?petsc-lite[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  bottle do
-    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/petsc-3.20.5"
-    rebuild 1
-    sha256 ventura:      "03d522d9bedc2949982222efb6350c4ea5927c8bed4bc27c43387401393b5f11"
-    sha256 x86_64_linux: "bb2e9d5ff7fe716535019d91130b50cd12b36a83cd9a1a5bd64a1fec45666f96"
-  end
-
   depends_on "hdf5-mpi" # Chaste
+  depends_on "hwloc"
   depends_on "hwloc"
   depends_on "kwabenantim/chaste/netcdf" # Chaste
   depends_on "metis"
@@ -25,8 +19,6 @@ class Petsc < Formula
   depends_on "openblas"
   depends_on "scalapack"
   depends_on "suite-sparse"
-
-  uses_from_macos "python" => :build
 
   conflicts_with "petsc-complex", because: "petsc must be installed with either real or complex support, not both"
 
@@ -40,35 +32,22 @@ class Petsc < Formula
                           "--F77=mpif77",
                           "--FC=mpif90",
                           "MAKEFLAGS=$MAKEFLAGS"
-
-    # Avoid references to Homebrew shims (perform replacement before running `make`, or else the shim
-    # paths will still end up in compiled code)
-    inreplace "arch-#{OS.kernel_name.downcase}-c-opt/include/petscconf.h", "#{Superenv.shims_path}/", ""
-
     system "make", "all"
     system "make", "install"
 
     # Avoid references to Homebrew shims
     rm_f lib/"petsc/conf/configure-hash"
 
-    if OS.mac? || File.foreach("#{lib}/petsc/conf/petscvariables").any? { |l| l[Superenv.shims_path.to_s] }
-      inreplace lib/"petsc/conf/petscvariables", "#{Superenv.shims_path}/", ""
-    end
-
-    # Avoid references to cellar paths.
-    gcc = Formula["gcc"]
-    open_mpi = Formula["open-mpi"]
-    inreplace (lib/"pkgconfig").glob("*.pc") do |s|
-      s.gsub! prefix, opt_prefix
-      s.gsub! gcc.prefix.realpath, gcc.opt_prefix
-      s.gsub! open_mpi.prefix.realpath, open_mpi.opt_prefix
+    if OS.mac?
+      inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
+    elsif File.readlines("#{lib}/petsc/conf/petscvariables").grep(Superenv.shims_path.to_s).any?
+      inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
     end
   end
 
   test do
-    flags = %W[-I#{include} -L#{lib} -lpetsc]
-    flags << "-Wl,-rpath,#{lib}" if OS.linux?
-    system "mpicc", pkgshare/"examples/src/ksp/ksp/tutorials/ex1.c", "-o", "test", *flags
+    test_case = "#{pkgshare}/examples/src/ksp/ksp/tutorials/ex1.c"
+    system "mpicc", test_case, "-I#{include}", "-L#{lib}", "-lpetsc", "-o", "test"
     output = shell_output("./test")
     # This PETSc example prints several lines of output. The last line contains
     # an error norm, expected to be small.
