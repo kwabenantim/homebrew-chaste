@@ -28,8 +28,8 @@ class Petsc < Formula
                           "--with-x=0",
                           "--CC=mpicc",
                           "--CXX=mpicxx",
-                          "--F77=mpif77",
-                          "--FC=mpif90",
+                          "--with-fc=0",
+                          "--with-shared-libraries",
                           "MAKEFLAGS=$MAKEFLAGS"
     system "make", "all"
     system "make", "install"
