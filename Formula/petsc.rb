@@ -10,7 +10,7 @@ class Petsc < Formula
     regex(/href=.*?petsc-lite[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  depends_on "hdf5-mpi" # Chaste: hdf5-mpi
+  depends_on "hdf5-mpi" # Chaste
   depends_on "hwloc"
   depends_on "kwabenantim/chaste/netcdf" # Chaste
   depends_on "metis"
@@ -29,7 +29,6 @@ class Petsc < Formula
                           "--CC=mpicc",
                           "--CXX=mpicxx",
                           "--with-fc=0",
-                          "--with-shared-libraries",
                           "MAKEFLAGS=$MAKEFLAGS"
     system "make", "all"
     system "make", "install"
@@ -37,11 +36,7 @@ class Petsc < Formula
     # Avoid references to Homebrew shims
     rm_f lib/"petsc/conf/configure-hash"
 
-    if OS.mac?
-      inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
-    elsif File.readlines("#{lib}/petsc/conf/petscvariables").grep(Superenv.shims_path.to_s).any?
-      inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
-    end
+    inreplace lib/"petsc/conf/petscvariables", Superenv.shims_path, ""
   end
 
   test do
