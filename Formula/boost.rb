@@ -1,26 +1,33 @@
 class Boost < Formula
   desc "Collection of portable C++ source libraries"
   homepage "https://www.boost.org/"
-  url "https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.bz2"
-  sha256 "953db31e016db7bb207f11432bef7df100516eeb746843fa0486a222e3fd49cb"
+  url "https://dl.bintray.com/boostorg/release/1.74.0/source/boost_1_74_0.tar.bz2"
+  mirror "https://dl.bintray.com/homebrew/mirror/boost_1_74_0.tar.bz2"
+  sha256 "83bfc1507731a0906e387fc28b7ef5417d591429e51e788417fe9ff025e116b1"
   license "BSL-1.0"
-  revision 1
+  head "https://github.com/boostorg/boost.git"
 
-  keg_only :versioned_formula
+  livecheck do
+    url "https://www.boost.org/feed/downloads.rss"
+    regex(/>Version v?(\d+(?:\.\d+)+)</i)
+  end
 
   depends_on "icu4c"
 
   uses_from_macos "bzip2"
   uses_from_macos "zlib"
 
+  # Fix build on 64-bit arm
+  patch do
+    url "https://github.com/boostorg/build/commit/456be0b7ecca065fbccf380c2f51e0985e608ba0.patch?full_index=1"
+    sha256 "e7a78145452fc145ea5d6e5f61e72df7dcab3a6eebb2cade6b4cfae815687f3a"
+    directory "tools/build"
+  end
+
   def install
     # Force boost to compile with the desired compiler
     open("user-config.jam", "a") do |file|
-      if OS.mac?
-        file.write "using darwin : : #{ENV.cxx} ;\n"
-      else
-        file.write "using gcc : : #{ENV.cxx} ;\n"
-      end
+      file.write "using darwin : : #{ENV.cxx} ;\n"
     end
 
     # libdir should be set by --prefix but isn't
@@ -65,6 +72,19 @@ class Boost < Formula
     system "./b2", *args
   end
 
+  def caveats
+    s = ""
+    # ENV.compiler doesn't exist in caveats. Check library availability
+    # instead.
+    if Dir["#{lib}/libboost_log*"].empty?
+      s += <<~EOS
+        Building of Boost.Log is disabled because it requires newer GCC or Clang.
+      EOS
+    end
+
+    s
+  end
+
   test do
     (testpath/"test.cpp").write <<~EOS
       #include <boost/algorithm/string.hpp>
@@ -85,7 +105,7 @@ class Boost < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "-I#{Formula["boost@1.76"].opt_include}", "test.cpp", "-std=c++14", "-o", "test"
+    system ENV.cxx, "test.cpp", "-std=c++14", "-stdlib=libc++", "-o", "test"
     system "./test"
   end
 end
