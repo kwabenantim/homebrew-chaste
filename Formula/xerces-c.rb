@@ -6,6 +6,13 @@ class XercesC < Formula
   sha256 "545cfcce6c4e755207bd1f27e319241e50e37c0c27250f11cda116018f1ef0f5"
   license "Apache-2.0"
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/xerces-c-3.2.5"
+    sha256 cellar: :any,                 arm64_sonoma: "ba08617a8b6dfb928450c09c4e820953df72c05510dee82a84dcaeb6dd6c7ace"
+    sha256 cellar: :any,                 ventura:      "78ff1a437c3a54dba79b5b67a4538add982de835b191e25baa6836245cbc517a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "64656a227bf2bffd6dd6106fc34a530059f997b68ad0215903171c361abea456"
+  end
+
   depends_on "cmake" => :build
 
   uses_from_macos "curl"
