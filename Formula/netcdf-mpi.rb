@@ -11,6 +11,11 @@ class NetcdfMpi < Formula
     formula "netcdf"
   end
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/netcdf-mpi-4.10.1"
+    sha256 cellar: :any, arm64_sequoia: "37595c689a535ea452b7797aea7240d808b46b61820238ab2f9ae6d39f706167"
+  end
+
   depends_on "cmake" => :build
   depends_on "hdf5-mpi"
   depends_on "open-mpi"
