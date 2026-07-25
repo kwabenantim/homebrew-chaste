@@ -11,6 +11,11 @@ class VtkMpi < Formula
     formula "vtk"
   end
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/vtk-mpi-9.6.2"
+    sha256 cellar: :any, arm64_sequoia: "fb637d35ca3527483339cc3592bf8bdfd50de67e968602fd8c83c809d1dd6da1"
+  end
+
   depends_on "cmake" => [:build, :test]
   # `import vtk` loads vtkmodules.numpy_interface unconditionally, so the
   # Python part of the test needs numpy even though VTK links against it.
