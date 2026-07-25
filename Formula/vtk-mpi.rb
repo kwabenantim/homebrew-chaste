@@ -12,6 +12,9 @@ class VtkMpi < Formula
   end
 
   depends_on "cmake" => [:build, :test]
+  # `import vtk` loads vtkmodules.numpy_interface unconditionally, so the
+  # Python part of the test needs numpy even though VTK links against it.
+  depends_on "numpy" => :test
   depends_on "pyqt" => :test
   depends_on "boost"
   depends_on "double-conversion"
