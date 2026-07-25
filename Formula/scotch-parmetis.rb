@@ -4,16 +4,11 @@ class ScotchParmetis < Formula
   url "https://gitlab.inria.fr/scotch/scotch/-/archive/v7.0.12/scotch-v7.0.12.tar.bz2"
   sha256 "3bdba84f2067398ee8931de5d4b1f3608b483ac56316fd5f348f9c0a594d57ae"
   license "CECILL-C"
+  revision 1
   head "https://gitlab.inria.fr/scotch/scotch.git", branch: "master"
 
   livecheck do
     formula "scotch"
-  end
-
-  bottle do
-    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/scotch-parmetis-7.0.12"
-    sha256 cellar: :any, arm64_sequoia: "df499e51bb097d63299a86b8be5d4af84ddb33f94766ea7449a68842c6578170"
-    sha256 cellar: :any, sequoia:       "9f894ab168ff80931001fba74876b0fcb0ae956d616bc3daf53a23910cc580f7"
   end
 
   # Scotch's METIS and ParMETIS compatibility headers are named metis.h and
@@ -46,6 +41,15 @@ class ScotchParmetis < Formula
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
 
+    # Chaste includes <scotch/ptscotch.h>, matching Debian's libscotch-dev
+    # layout, while upstream installs the headers flat. Mirror them into a
+    # scotch/ subdirectory of relative symlinks so both spellings resolve from
+    # the same -I#{include}. ptscotch.h includes "scotch.h" in quotes, which
+    # resolves next to itself, so every header has to be mirrored rather than
+    # just the ones Chaste names.
+    headers = include.children.select(&:file?)
+    (include/"scotch").install_symlink headers
+
     (pkgshare/"check").install "src/check/test_strat_seq.c"
     (pkgshare/"check").install "src/check/test_strat_par.c"
     (pkgshare/"libscotch").install "src/libscotch/common.h"
@@ -61,6 +65,22 @@ class ScotchParmetis < Formula
     # deliberately withholds via -DINSTALL_METIS_HEADERS=OFF.
     assert_path_exists include/"metis.h"
     assert_path_exists include/"parmetis.h"
+
+    # Chaste spells it <scotch/ptscotch.h>, which in turn pulls in "scotch.h"
+    # from alongside itself, so compile it exactly as Chaste would.
+    # scotch.h uses FILE, so stdio.h has to come first; ptscotch.h needs mpi.h.
+    (testpath/"subdir_test.c").write <<~C
+      #include <stdio.h>
+      #include <mpi.h>
+      #include <scotch/ptscotch.h>
+      int main(void) {
+        printf("%d.%d.%d", SCOTCH_VERSION, SCOTCH_RELEASE, SCOTCH_PATCHLEVEL);
+        return 0;
+      }
+    C
+    system "mpicc", "subdir_test.c", "-o", "subdir_test", "-I#{include}",
+                    "-L#{lib}", "-lptscotch", "-lscotch", "-lscotcherr", "-Wl,-rpath,#{lib}"
+    assert_match version.major_minor_patch.to_s, shell_output("./subdir_test")
 
     (testpath/"test.c").write <<~C
       #include <stdlib.h>
