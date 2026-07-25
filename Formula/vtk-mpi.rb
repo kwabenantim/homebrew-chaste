@@ -14,6 +14,7 @@ class VtkMpi < Formula
   bottle do
     root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/vtk-mpi-9.6.2"
     sha256 cellar: :any, arm64_sequoia: "fb637d35ca3527483339cc3592bf8bdfd50de67e968602fd8c83c809d1dd6da1"
+    sha256 cellar: :any, sequoia:       "531a7984250c5c579def6b57096431ad5a7f3e077fb5ca27e7feda7e51f764b2"
   end
 
   depends_on "cmake" => [:build, :test]

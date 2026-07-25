@@ -14,6 +14,7 @@ class NetcdfMpi < Formula
   bottle do
     root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/netcdf-mpi-4.10.1"
     sha256 cellar: :any, arm64_sequoia: "37595c689a535ea452b7797aea7240d808b46b61820238ab2f9ae6d39f706167"
+    sha256 cellar: :any, sequoia:       "949f560fbad1174b77465c0fe7a1ceb3f2204729edd6e0f7c8bb1718155f65b0"
   end
 
   depends_on "cmake" => :build

@@ -14,6 +14,7 @@ class CgnsMpi < Formula
   bottle do
     root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/cgns-mpi-4.5.2"
     sha256 arm64_sequoia: "2685ab3b877552750a2c3b30ace19bb6b3e44c5fa3fc5fa95abfbae1e2dd9f87"
+    sha256 sequoia:       "00d659bb4066ebad11ed706c8eb2a9d6d26d734f209bfaa787139ccce0b2d6d9"
   end
 
   depends_on "cmake" => :build
