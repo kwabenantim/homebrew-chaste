@@ -15,6 +15,11 @@ class ChasteDependencies < Formula
   sha256 File.exist?(formula_path) ? Digest::SHA256.file(formula_path).hexdigest : "0"*64
   license "BSD-3-Clause"
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/chaste-dependencies-2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6963ad2ec576a03e6656aa9e8c96f6bff61726346f3f81acd5c73a7160ba31b6"
+  end
+
   depends_on "boost"
   depends_on "cmake"
   depends_on "hdf5-mpi"
