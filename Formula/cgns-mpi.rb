@@ -37,7 +37,7 @@ class CgnsMpi < Formula
       -DHDF5_NEED_MPI=YES
       -DCGNS_ENABLE_PARALLEL=YES
       -DCMAKE_C_COMPILER=mpicc
-      -DCMAKE_Fortran_COMPILER=#{Formula["gcc"].opt_bin}/gfortran
+      -DCMAKE_Fortran_COMPILER=#{formula_opt_bin("gcc")}/gfortran
     ]
 
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
@@ -59,7 +59,8 @@ class CgnsMpi < Formula
     # Guard against the Fortran link drifting back to the mpif90 wrapper, which
     # would silently produce a flat-namespace library.
     if OS.mac?
-      assert_match "TWOLEVEL", shell_output("otool -hv #{lib}/libcgns.#{version.major_minor}.dylib")
+      dylib = lib/"libcgns.#{version.major_minor}.dylib"
+      assert_match "TWOLEVEL", shell_output("otool -hv #{dylib}")
     end
 
     (testpath/"test.c").write <<~C
