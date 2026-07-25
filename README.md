@@ -1,39 +1,55 @@
-# Chaste Dependencies
+# Homebrew Chaste Dependencies
 
-Homebrew formulae for [Chaste](https://chaste.github.io/), a simulation package
-for computational biology.
+Homebrew formulae for installing the dependencies for [Chaste](https://chaste.github.io/), a simulation package for
+computational biology.
 
 ## How do I install these formulae?
 
-`brew install kwabenantim/chaste/chaste-dependencies`
+```sh
+brew install kwabenantim/chaste/chaste-dependencies
+```
 
-Or `brew tap kwabenantim/chaste` and then `brew install chaste-dependencies`.
+Or
+
+```sh
+brew tap kwabenantim/chaste
+brew install chaste-dependencies
+```
 
 ## What is in this tap?
 
-Chaste needs an MPI-enabled build of VTK. VTK links against HDF5, and so do two
-of its dependencies, so all three have to agree on which HDF5 they use. This tap
-carries only those parallel variants:
+Chaste needs MPI-enabled variants of VTK and HDF5. Homebrew-core currently provides an `hdf5-mpi` variant of `hdf5`, but
+no `vtk-mpi` variant of `vtk`. VTK links against HDF5 so the `vtk-mpi` variant should link against the parallel
+`hdf5-mpi` variant from homebrew-core to avoid conflicts with the main `hdf5`. Two VTK dependencies (`netcdf` and
+`cgns`) also link against HDF5 and need to do the same. This tap carries only those three variants:
 
-| Formula      | Variant of | Built against            |
-| ------------ | ---------- | ------------------------ |
+| Formula      | Variant of | Built against                        |
+| ------------ | ---------- | ------------------------------------ |
 | `vtk-mpi`    | `vtk`      | `hdf5-mpi`, `netcdf-mpi`, `cgns-mpi` |
-| `netcdf-mpi` | `netcdf`   | `hdf5-mpi`               |
-| `cgns-mpi`   | `cgns`     | `hdf5-mpi`               |
+| `netcdf-mpi` | `netcdf`   | `hdf5-mpi`                           |
+| `cgns-mpi`   | `cgns`     | `hdf5-mpi`                           |
 
-Each conflicts with its homebrew-core counterpart, in the same way `hdf5-mpi`
-conflicts with `hdf5`. Installing one will fail while the serial version is
-present:
+Each conflicts with its homebrew-core counterpart, in the same way `hdf5-mpi` conflicts with `hdf5`. Installing one will
+fail while the serial version is present. To replace pre-installed serial versions:
 
-```
-brew uninstall --ignore-dependencies vtk netcdf cgns hdf5
+```sh
+brew uninstall --ignore-dependencies vtk netcdf cgns hdf5 || true
 brew install kwabenantim/chaste/vtk-mpi
 ```
 
-Everything else Chaste needs comes from homebrew-core: `boost`, `cmake`,
-`hdf5-mpi`, `petsc`, `scotch`, `sundials`, `xerces-c` and `xsd`. The
-`chaste-dependencies` formula installs that list plus `vtk-mpi`, and provides a
-`chaste-dependencies` command that prints the name, version and prefix of each.
+Everything else Chaste needs comes from homebrew-core:
+
+- `boost`
+- `cmake`
+- `hdf5-mpi`
+- `petsc`
+- `scotch`
+- `sundials`
+- `xerces-c`
+- `xsd`
+
+The `chaste-dependencies` meta-formula installs that list plus `vtk-mpi`, and provides a `chaste-dependencies` command
+that prints the name, version and prefix of each.
 
 ## Documentation
 
