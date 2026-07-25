@@ -50,6 +50,11 @@ class NetcdfMpi < Formula
     # a plain compiler reached the recorded settings.
     inreplace [bin/"nc-config", lib/"pkgconfig/netcdf.pc", lib/"cmake/netCDF/netCDFConfig.cmake",
                lib/"libnetcdf.settings"], Superenv.shims_path/ENV.cc, ENV.cc, audit_result: false
+
+    # libnetcdf.settings is a build-configuration summary, not a library, and
+    # nothing in the keg reads it (nc-config exposes the same information).
+    # Keep a copy but out of lib, where non-libraries fail `brew audit --new`.
+    pkgshare.install lib/"libnetcdf.settings"
   end
 
   test do

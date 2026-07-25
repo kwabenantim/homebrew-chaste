@@ -22,16 +22,22 @@ class CgnsMpi < Formula
     # CMake FortranCInterface_VERIFY fails with LTO on Linux due to different GCC and GFortran versions
     ENV.append "FFLAGS", "-fno-lto" if OS.linux?
 
+    # Fortran is driven by gfortran rather than the mpif90 wrapper. Open MPI's
+    # Fortran wrapper hardcodes -Wl,-flat_namespace (see `mpif90 -show`), which
+    # cannot be overridden by a later -Wl,-twolevel_namespace at any position,
+    # and it would leave libcgns compiled with a flat namespace. CMake still
+    # finds the MPI Fortran bindings itself via find_package(MPI).
+    #
     # HDF5_NEED_MPI unlocks CGNS_ENABLE_PARALLEL, and CGNS hard-errors if the
     # HDF5 it finds turns out to lack parallel support.
-    args = %w[
+    args = %W[
       -DCGNS_ENABLE_64BIT=YES
       -DCGNS_ENABLE_FORTRAN=YES
       -DCGNS_ENABLE_HDF5=YES
       -DHDF5_NEED_MPI=YES
       -DCGNS_ENABLE_PARALLEL=YES
       -DCMAKE_C_COMPILER=mpicc
-      -DCMAKE_Fortran_COMPILER=mpif90
+      -DCMAKE_Fortran_COMPILER=#{Formula["gcc"].opt_bin}/gfortran
     ]
 
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
@@ -46,6 +52,15 @@ class CgnsMpi < Formula
   test do
     # The parallel interface header is only installed for a parallel build.
     assert_path_exists include/"pcgnslib.h"
+
+    # The Fortran module is only installed when the Fortran bindings are built.
+    assert_path_exists include/"cgns.mod"
+
+    # Guard against the Fortran link drifting back to the mpif90 wrapper, which
+    # would silently produce a flat-namespace library.
+    if OS.mac?
+      assert_match "TWOLEVEL", shell_output("otool -hv #{lib}/libcgns.#{version.major_minor}.dylib")
+    end
 
     (testpath/"test.c").write <<~C
       #include <stdio.h>
