@@ -11,6 +11,11 @@ class CgnsMpi < Formula
     formula "cgns"
   end
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/cgns-mpi-4.5.2"
+    sha256 arm64_sequoia: "2685ab3b877552750a2c3b30ace19bb6b3e44c5fa3fc5fa95abfbae1e2dd9f87"
+  end
+
   depends_on "cmake" => :build
   depends_on "gcc" # for gfortran
   depends_on "hdf5-mpi"
