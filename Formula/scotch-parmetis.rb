@@ -10,6 +10,11 @@ class ScotchParmetis < Formula
     formula "scotch"
   end
 
+  bottle do
+    root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/scotch-parmetis-7.0.12"
+    sha256 cellar: :any, arm64_sequoia: "df499e51bb097d63299a86b8be5d4af84ddb33f94766ea7449a68842c6578170"
+  end
+
   # Scotch's METIS and ParMETIS compatibility headers are named metis.h and
   # parmetis.h, so linking them would collide with the `metis` formula. `metis`
   # cannot simply be avoided: `petsc` requires it, and Chaste needs `petsc`.
