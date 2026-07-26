@@ -64,6 +64,23 @@ Everything else Chaste needs comes from homebrew-core:
 The `chaste-dependencies` meta-formula installs that list plus `vtk-mpi` and `scotch-parmetis`, and provides a
 `chaste-dependencies` command that prints the name, version and prefix of each.
 
+## How do I configure Chaste?
+
+Everything above is linked into the Homebrew prefix and found by CMake without help, except `scotch-parmetis`, which is
+keg-only. Point Chaste at it:
+
+```sh
+cmake .. -DPARMETIS_ROOT="$(brew --prefix scotch-parmetis)"
+```
+
+This message is expected during configuration:
+
+```
+No ParMETIS found in <petsc prefix>: looking for system ParMETIS instead
+```
+
+This is because ParMETIS is not bundled with PETSc on homebrew. The `PARMETIS_ROOT` supplied above will be used instead.
+
 ## Documentation
 
 `brew help`, `man brew` or check [Homebrew's documentation](https://docs.brew.sh).
