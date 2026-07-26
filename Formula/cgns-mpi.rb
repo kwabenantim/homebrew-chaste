@@ -3,7 +3,7 @@ class CgnsMpi < Formula
   homepage "https://cgns.github.io/"
   url "https://github.com/CGNS/CGNS/archive/refs/tags/v4.5.2.tar.gz"
   sha256 "95075e1fd0b51d97b1b96b73ebe03b1a551fbcc9cd2b2b6f487ccccedcff5964"
-  license "BSD-3-Clause"
+  license "Zlib"
   compatibility_version 1
   head "https://github.com/CGNS/CGNS.git", branch: "develop"
 
