@@ -14,6 +14,7 @@ class ScotchParmetis < Formula
   bottle do
     root_url "https://github.com/kwabenantim/homebrew-chaste/releases/download/scotch-parmetis-7.0.12_1"
     sha256 cellar: :any, arm64_sequoia: "82e6c2bf8035453f32403e0f11414d7e85a633b90db0216a7dc7ef5ded35afe7"
+    sha256 cellar: :any, sequoia:       "f318b36703ae47334e35826e02d75aaf7e83c268bcec06ea79d958f9920d1a21"
   end
 
   # Scotch's METIS and ParMETIS compatibility headers are named metis.h and
