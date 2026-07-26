@@ -50,6 +50,15 @@ class ScotchParmetis < Formula
     headers = include.children.select(&:file?)
     (include/"scotch").install_symlink headers
 
+    # Chaste's FindParMETIS.cmake hardcodes `find_library(PARMETIS_LIBRARY
+    # parmetis)`, so the ParMETIS shim has to be reachable under ParMETIS's own
+    # library name for find_package to succeed from PARMETIS_ROOT alone. Its
+    # PARMETIS_LIB_NAME variable is documented but never used, so it cannot
+    # redirect the search. Real ParMETIS is a separate library, not a version of
+    # this one, hence a plain alias rather than a versioned dylib name.
+    shim = shared_library("libptscotchparmetisv3")
+    lib.install_symlink shim => shared_library("libparmetis")
+
     (pkgshare/"check").install "src/check/test_strat_seq.c"
     (pkgshare/"check").install "src/check/test_strat_par.c"
     (pkgshare/"libscotch").install "src/libscotch/common.h"
@@ -132,6 +141,12 @@ class ScotchParmetis < Formula
     system "mpicc", "parmetis_test.c", "-o", "parmetis_test",
                     "-lptscotchparmetisv3", "-lptscotch", "-Wl,-rpath,#{lib}", *args
     assert_match "parmetis ok", shell_output("./parmetis_test")
+
+    # The same program has to link through the ParMETIS alias, which is how
+    # find_package(ParMETIS) will spell it.
+    system "mpicc", "parmetis_test.c", "-o", "parmetis_alias_test",
+                    "-lparmetis", "-lptscotch", "-Wl,-rpath,#{lib}", *args
+    assert_match "parmetis ok", shell_output("./parmetis_alias_test")
 
     system ENV.cc, pkgshare/"check/test_strat_seq.c", "-o", "test_strat_seq", *args
     assert_match "Sequential mapping strategy, SCOTCH_STRATDEFAULT", shell_output("./test_strat_seq")
