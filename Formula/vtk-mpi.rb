@@ -81,7 +81,7 @@ class VtkMpi < Formula
       ENV.remove "HOMEBREW_DEPENDENCIES", "expat"
     end
 
-    python = "python3.14"
+    python = python3
     qml_plugin_dir = lib/"qml/VTK.#{version.major_minor}"
     vtkmodules_dir = prefix/Language::Python.site_packages(python)/"vtkmodules"
     rpaths = [rpath, rpath(source: qml_plugin_dir), rpath(source: vtkmodules_dir)]
@@ -121,7 +121,7 @@ class VtkMpi < Formula
       -DVTK_MODULE_USE_EXTERNAL_VTK_tiff:BOOL=ON
       -DVTK_MODULE_USE_EXTERNAL_VTK_utf8:BOOL=ON
       -DVTK_MODULE_USE_EXTERNAL_VTK_zlib:BOOL=ON
-      -DPython3_EXECUTABLE:FILEPATH=#{which(python)}
+      -DPython3_EXECUTABLE:FILEPATH=#{which(python.to_s)}
       -DVTK_GROUP_ENABLE_Qt:STRING=YES
       -DVTK_QT_VERSION:STRING=6
       -DVTK_USE_MPI:BOOL=ON
@@ -162,9 +162,10 @@ class VtkMpi < Formula
       }
     CPP
 
-    system "cmake", ".", "-DCMAKE_BUILD_TYPE=Debug", "-DCMAKE_VERBOSE_MAKEFILE=ON", "-DVTK_DIR=#{vtk_dir}"
-    system "make"
-    system "./Distance2BetweenPoints"
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug",
+           "-DCMAKE_VERBOSE_MAKEFILE=ON", "-DVTK_DIR=#{vtk_dir}"
+    system "cmake", "--build", "build"
+    system "./build/Distance2BetweenPoints"
 
     (testpath/"Distance2BetweenPoints.py").write <<~PYTHON
       import vtk
