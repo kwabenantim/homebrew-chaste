@@ -11,7 +11,7 @@ class ChasteDependencies < Formula
   desc "Dependencies for Chaste, a simulation package for computational biology"
   homepage "https://chaste.github.io/"
   url "file://"+formula_path
-  version "3"
+  version "4"
   sha256 File.exist?(formula_path) ? Digest::SHA256.file(formula_path).hexdigest : "0"*64
   license "BSD-3-Clause"
 
@@ -39,5 +39,9 @@ class ChasteDependencies < Formula
       end
     end
     bin.install "chaste-dependencies"
+  end
+
+  test do
+    assert_match "kwabenantim/chaste/vtk-mpi", shell_output(bin/"chaste-dependencies")
   end
 end
